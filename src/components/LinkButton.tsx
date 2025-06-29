@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 
@@ -11,33 +12,69 @@ interface LinkButtonProps {
 
 const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, animationClass = '', isPDF = false }) => {
   const handleClick = () => {
+    console.log('LinkButton clicked:', { href, isPDF, userAgent: navigator.userAgent });
+    
     if (isPDF) {
-      // Para PDFs, tenta abrir em nova aba
-      const link = document.createElement('a');
-      link.href = href;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
+      console.log('Attempting to open PDF:', href);
       
-      // Fallback para dispositivos que não conseguem abrir PDF no navegador
-      link.onclick = (e) => {
-        // Verifica se o arquivo existe antes de tentar abrir
-        fetch(href, { method: 'HEAD' })
-          .then(response => {
-            if (!response.ok) {
+      // Detecta se é mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      console.log('Is mobile device:', isMobile);
+      
+      if (isMobile) {
+        // Para mobile, tenta várias abordagens
+        console.log('Using mobile PDF handling');
+        
+        // Primeira tentativa: abrir diretamente
+        try {
+          window.open(href, '_blank');
+          console.log('Mobile: window.open attempted');
+        } catch (error) {
+          console.error('Mobile: window.open failed', error);
+          
+          // Fallback: criar link e clicar
+          const link = document.createElement('a');
+          link.href = href;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.download = 'catalogo-gb-2024.pdf'; // Força download em alguns casos
+          
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          console.log('Mobile: fallback link click attempted');
+        }
+      } else {
+        // Para desktop, mantém a lógica original com verificação
+        const link = document.createElement('a');
+        link.href = href;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        
+        link.onclick = (e) => {
+          console.log('Desktop: checking PDF availability');
+          fetch(href, { method: 'HEAD' })
+            .then(response => {
+              console.log('PDF check response:', response.status, response.ok);
+              if (!response.ok) {
+                e.preventDefault();
+                alert('Catálogo em breve! O arquivo PDF ainda não foi adicionado.');
+              }
+            })
+            .catch((error) => {
+              console.error('PDF check failed:', error);
               e.preventDefault();
               alert('Catálogo em breve! O arquivo PDF ainda não foi adicionado.');
-            }
-          })
-          .catch(() => {
-            e.preventDefault();
-            alert('Catálogo em breve! O arquivo PDF ainda não foi adicionado.');
-          });
-      };
-      
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+            });
+        };
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        console.log('Desktop: link creation and click attempted');
+      }
     } else {
+      console.log('Opening regular link:', href);
       window.open(href, '_blank', 'noopener,noreferrer');
     }
   };
