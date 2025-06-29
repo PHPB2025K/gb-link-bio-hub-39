@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Globe, ShoppingCart, Package, ShoppingBag, BookOpen, Instagram, MessageCircle } from 'lucide-react';
 import LinkButton from '../components/LinkButton';
@@ -38,12 +39,12 @@ const Index = () => {
   ];
 
   const animationClasses = [
-    'animate-slide-in-bounce',
-    'animate-slide-in-bounce-delay-1',
-    'animate-slide-in-bounce-delay-2',
-    'animate-slide-in-bounce-delay-3',
-    'animate-slide-in-bounce-delay-4',
-    'animate-slide-in-bounce-delay-5'
+    'animate-slide-bounce-1',
+    'animate-slide-bounce-2',
+    'animate-slide-bounce-3',
+    'animate-slide-bounce-4',
+    'animate-slide-bounce-5',
+    'animate-slide-bounce-6'
   ];
 
   const socialLinks = [
