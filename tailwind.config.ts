@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -110,12 +111,12 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'slide-in-bounce': 'slide-in-bounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-				'slide-in-bounce-delay-1': 'slide-in-bounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.1s both',
-				'slide-in-bounce-delay-2': 'slide-in-bounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s both',
-				'slide-in-bounce-delay-3': 'slide-in-bounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s both',
-				'slide-in-bounce-delay-4': 'slide-in-bounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.4s both',
-				'slide-in-bounce-delay-5': 'slide-in-bounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s both'
+				'slide-in-bounce': 'slide-in-bounce 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+				'slide-in-bounce-delay-1': 'slide-in-bounce 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.15s both',
+				'slide-in-bounce-delay-2': 'slide-in-bounce 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s both',
+				'slide-in-bounce-delay-3': 'slide-in-bounce 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.45s both',
+				'slide-in-bounce-delay-4': 'slide-in-bounce 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.6s both',
+				'slide-in-bounce-delay-5': 'slide-in-bounce 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.75s both'
 			}
 		}
 	},
