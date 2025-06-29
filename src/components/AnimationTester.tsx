@@ -7,6 +7,7 @@ const AnimationTester = () => {
   
   const animationOptions = {
     'slide-bounce': ['animate-slide-bounce-1', 'animate-slide-bounce-2', 'animate-slide-bounce-3', 'animate-slide-bounce-4', 'animate-slide-bounce-5', 'animate-slide-bounce-6'],
+    'smooth-slide': ['animate-smooth-slide-1', 'animate-smooth-slide-2', 'animate-smooth-slide-3', 'animate-smooth-slide-4', 'animate-smooth-slide-5', 'animate-smooth-slide-6'],
     'fade-scale': ['animate-fade-scale-1', 'animate-fade-scale-2', 'animate-fade-scale-3', 'animate-fade-scale-4', 'animate-fade-scale-5', 'animate-fade-scale-6'],
     'diagonal': ['animate-diagonal-1', 'animate-diagonal-2', 'animate-diagonal-3', 'animate-diagonal-4', 'animate-diagonal-5', 'animate-diagonal-6'],
     'wave': ['animate-wave-1', 'animate-wave-2', 'animate-wave-3', 'animate-wave-4', 'animate-wave-5', 'animate-wave-6'],
@@ -84,6 +85,7 @@ const AnimationTester = () => {
           <h3 className="text-lg font-semibold mb-4 text-gb-green">Descrição das Animações:</h3>
           <div className="space-y-2 text-sm text-gray-600">
             <p><strong>Slide Bounce:</strong> Desliza da direita com um bounce suave no final</p>
+            <p><strong>Smooth Slide:</strong> Deslizamento mais lento e suave, ideal para um efeito elegante</p>
             <p><strong>Fade Scale:</strong> Aparece com fade e um leve efeito de escala</p>
             <p><strong>Diagonal:</strong> Entra na diagonal com uma leve rotação</p>
             <p><strong>Wave:</strong> Efeito de ondulação com skew</p>

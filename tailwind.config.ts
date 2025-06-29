@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -107,6 +108,21 @@ export default {
 						transform: 'translateX(0)'
 					}
 				},
+				// NOVA OPÇÃO: Smooth Slide (mais devagar e suave)
+				'smooth-slide': {
+					'0%': {
+						transform: 'translateX(60px)',
+						opacity: '0'
+					},
+					'50%': {
+						transform: 'translateX(-2px)',
+						opacity: '0.8'
+					},
+					'100%': {
+						transform: 'translateX(0)',
+						opacity: '1'
+					}
+				},
 				// OPÇÃO 2: Fade com Scale Elegante
 				'fade-scale-up': {
 					'0%': {
@@ -202,6 +218,14 @@ export default {
 				'slide-bounce-4': 'slide-bounce-gentle 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.45s both',
 				'slide-bounce-5': 'slide-bounce-gentle 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s both',
 				'slide-bounce-6': 'slide-bounce-gentle 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.75s both',
+
+				// NOVA OPÇÃO: Smooth Slide (mais devagar)
+				'smooth-slide-1': 'smooth-slide 1.2s cubic-bezier(0.25, 0.1, 0.25, 1)',
+				'smooth-slide-2': 'smooth-slide 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s both',
+				'smooth-slide-3': 'smooth-slide 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.4s both',
+				'smooth-slide-4': 'smooth-slide 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.6s both',
+				'smooth-slide-5': 'smooth-slide 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.8s both',
+				'smooth-slide-6': 'smooth-slide 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 1.0s both',
 
 				// OPÇÃO 2: Fade Scale Up
 				'fade-scale-1': 'fade-scale-up 0.6s ease-out',
