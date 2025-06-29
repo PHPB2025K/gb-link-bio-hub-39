@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Globe, ShoppingCart, Package, ShoppingBag, BookOpen, Instagram, MessageCircle, FileText } from 'lucide-react';
 import LinkButton from '../components/LinkButton';
@@ -32,7 +31,7 @@ const Index = () => {
       text: 'Loja Oficial Shopee'
     },
     {
-      href: '/catalogo-gb-importadora.pdf',
+      href: '/catalogo-gb-2024.pdf',
       icon: FileText,
       text: 'Catálogo Completo (PDF)',
       isPDF: true
