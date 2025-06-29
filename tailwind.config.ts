@@ -92,24 +92,27 @@ export default {
 						height: '0'
 					}
 				},
-				// Animação de slide lento com bounce no final
+				// Animação de slide lento com bounce no final - duração ainda mais lenta
 				'slow-slide-bounce': {
 					'0%': {
 						transform: 'translateX(100px)',
 						opacity: '0'
 					},
-					'75%': {
-						transform: 'translateX(-8px)',
+					'70%': {
+						transform: 'translateX(-12px)',
 						opacity: '1'
 					},
-					'85%': {
-						transform: 'translateX(4px)'
+					'80%': {
+						transform: 'translateX(6px)'
 					},
-					'92%': {
-						transform: 'translateX(-2px)'
+					'88%': {
+						transform: 'translateX(-3px)'
 					},
-					'96%': {
-						transform: 'translateX(1px)'
+					'94%': {
+						transform: 'translateX(1.5px)'
+					},
+					'97%': {
+						transform: 'translateX(-0.5px)'
 					},
 					'100%': {
 						transform: 'translateX(0)',
@@ -121,13 +124,13 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				
-				// Animações lentas sequenciais com bounce - intervalo de 1s - duração mais lenta
-				'slow-slide-1': 'slow-slide-bounce 3.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0s both',
-				'slow-slide-2': 'slow-slide-bounce 3.5s cubic-bezier(0.25, 0.1, 0.25, 1) 1s both',
-				'slow-slide-3': 'slow-slide-bounce 3.5s cubic-bezier(0.25, 0.1, 0.25, 1) 2s both',
-				'slow-slide-4': 'slow-slide-bounce 3.5s cubic-bezier(0.25, 0.1, 0.25, 1) 3s both',
-				'slow-slide-5': 'slow-slide-bounce 3.5s cubic-bezier(0.25, 0.1, 0.25, 1) 4s both',
-				'slow-slide-6': 'slow-slide-bounce 3.5s cubic-bezier(0.25, 0.1, 0.25, 1) 5s both'
+				// Animações com duração mais lenta (5s) e intervalo menor (0.75s)
+				'slow-slide-1': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 0s both',
+				'slow-slide-2': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.75s both',
+				'slow-slide-3': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 1.5s both',
+				'slow-slide-4': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 2.25s both',
+				'slow-slide-5': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 3s both',
+				'slow-slide-6': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 3.75s both'
 			}
 		}
 	},
