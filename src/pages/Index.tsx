@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Globe, ShoppingCart, Package, ShoppingBag, BookOpen, Instagram, MessageCircle } from 'lucide-react';
+import { Globe, ShoppingCart, Package, ShoppingBag, BookOpen, Instagram, MessageCircle, FileText } from 'lucide-react';
 import LinkButton from '../components/LinkButton';
 import SocialIcon from '../components/SocialIcon';
 
@@ -32,9 +32,10 @@ const Index = () => {
       text: 'Loja Oficial Shopee'
     },
     {
-      href: '#',
-      icon: BookOpen,
-      text: 'Catálogo Completo'
+      href: '/catalogo-gb-importadora.pdf',
+      icon: FileText,
+      text: 'Catálogo Completo (PDF)',
+      isPDF: true
     }
   ];
 
@@ -89,6 +90,7 @@ const Index = () => {
               icon={link.icon}
               text={link.text}
               animationClass={animationClasses[index]}
+              isPDF={link.isPDF}
             />
           ))}
         </div>
