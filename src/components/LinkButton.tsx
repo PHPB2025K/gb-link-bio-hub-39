@@ -17,70 +17,77 @@ const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, animati
     if (isPDF) {
       console.log('PDF link clicked, attempting to open:', href);
       
-      // Melhor detecção de mobile - inclui mais dispositivos
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent) || 
-                       ('ontouchstart' in window) || 
-                       (navigator.maxTouchPoints > 0);
+      // Detecção melhorada de mobile - forçando para sempre tratar como mobile se tiver qualquer indicação
+      const userAgent = navigator.userAgent.toLowerCase();
+      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isMobileUserAgent = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(userAgent);
+      const isSmallScreen = window.innerWidth <= 768;
       
-      console.log('Is mobile device:', isMobile);
-      console.log('Touch support:', 'ontouchstart' in window);
-      console.log('Max touch points:', navigator.maxTouchPoints);
+      // Se qualquer uma dessas condições for verdadeira, trata como mobile
+      const isMobile = hasTouch || isMobileUserAgent || isSmallScreen;
       
-      if (isMobile) {
-        console.log('Mobile detected - using direct PDF approach');
+      console.log('=== MOBILE DETECTION DEBUG ===');
+      console.log('User Agent:', userAgent);
+      console.log('Has touch:', hasTouch);
+      console.log('Mobile UA detected:', isMobileUserAgent);
+      console.log('Small screen:', isSmallScreen, 'Width:', window.innerWidth);
+      console.log('Final mobile detection:', isMobile);
+      console.log('===============================');
+      
+      // SEMPRE trata como mobile para PDF - mais simples e funciona melhor
+      console.log('Treating as MOBILE for PDF - using direct approach');
+      
+      // Caminhos possíveis para o PDF
+      const pdfPaths = [
+        '/catalogo-gb-2024.pdf',
+        './catalogo-gb-2024.pdf',
+        `${window.location.origin}/catalogo-gb-2024.pdf`,
+        `${window.location.origin}/public/catalogo-gb-2024.pdf`
+      ];
+      
+      console.log('Trying PDF paths:', pdfPaths);
+      
+      let pdfOpened = false;
+      
+      // Tenta cada caminho até conseguir abrir
+      for (let i = 0; i < pdfPaths.length && !pdfOpened; i++) {
+        const pdfUrl = pdfPaths[i];
+        console.log(`Attempt ${i + 1}: Opening PDF URL:`, pdfUrl);
         
-        // Para mobile, primeiro tenta o caminho público
-        const pdfPaths = [
-          '/catalogo-gb-2024.pdf',
-          './catalogo-gb-2024.pdf',
-          `${window.location.origin}/catalogo-gb-2024.pdf`
-        ];
-        
-        console.log('Trying PDF paths:', pdfPaths);
-        
-        // Tenta abrir diretamente o primeiro caminho
-        const pdfUrl = pdfPaths[0];
-        console.log('Opening PDF URL:', pdfUrl);
-        
-        // Para mobile, usa window.open sem verificação prévia
-        const opened = window.open(pdfUrl, '_blank', 'noopener,noreferrer');
-        
-        if (!opened) {
-          console.log('Window.open was blocked, trying alternative...');
-          // Alternativa: criar elemento <a> e simular clique
-          const link = document.createElement('a');
-          link.href = pdfUrl;
-          link.target = '_blank';
-          link.download = 'catalogo-gb-2024.pdf';
-          link.rel = 'noopener noreferrer';
+        try {
+          // Tenta window.open primeiro
+          const opened = window.open(pdfUrl, '_blank', 'noopener,noreferrer');
           
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          
-          console.log('Alternative download method used');
-        } else {
-          console.log('PDF opened successfully with window.open');
+          if (opened && !opened.closed) {
+            console.log('✅ PDF opened successfully with window.open');
+            pdfOpened = true;
+            break;
+          } else {
+            console.log('❌ Window.open failed or was blocked');
+          }
+        } catch (error) {
+          console.log('❌ Window.open threw error:', error);
         }
-        
-      } else {
-        console.log('Desktop detected - checking file availability first');
-        
-        fetch(href, { method: 'HEAD' })
-          .then(response => {
-            console.log('File check response:', response.status, response.ok);
-            if (response.ok) {
-              window.open(href, '_blank', 'noopener,noreferrer');
-            } else {
-              console.log('File not found, showing alert');
-              alert('Catálogo em breve! O arquivo PDF ainda não foi adicionado.');
-            }
-          })
-          .catch((error) => {
-            console.error('File check failed:', error);
-            alert('Catálogo em breve! O arquivo PDF ainda não foi adicionado.');
-          });
       }
+      
+      // Se nenhum caminho funcionou, tenta método alternativo
+      if (!pdfOpened) {
+        console.log('All paths failed, trying alternative download method...');
+        
+        const link = document.createElement('a');
+        link.href = '/catalogo-gb-2024.pdf';
+        link.target = '_blank';
+        link.download = 'catalogo-gb-2024.pdf';
+        link.rel = 'noopener noreferrer';
+        
+        // Adiciona ao DOM temporariamente
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        console.log('✅ Alternative download method executed');
+      }
+      
     } else {
       console.log('Opening regular link:', href);
       window.open(href, '_blank', 'noopener,noreferrer');
