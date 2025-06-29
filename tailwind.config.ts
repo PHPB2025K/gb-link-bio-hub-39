@@ -1,5 +1,3 @@
-
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -124,16 +122,15 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				
-				// Animações com duração mais lenta (5s) e intervalo menor (0.75s)
+				// Animações com duração mais lenta (5s) e intervalo de 0.5s
 				'slow-slide-1': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 0s both',
-				'slow-slide-2': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.75s both',
-				'slow-slide-3': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 1.5s both',
-				'slow-slide-4': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 2.25s both',
-				'slow-slide-5': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 3s both',
-				'slow-slide-6': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 3.75s both'
+				'slow-slide-2': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.5s both',
+				'slow-slide-3': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 1s both',
+				'slow-slide-4': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 1.5s both',
+				'slow-slide-5': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 2s both',
+				'slow-slide-6': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 2.5s both'
 			}
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
 } satisfies Config;
-
