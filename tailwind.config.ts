@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -119,13 +120,13 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				
-				// Animações lentas sequenciais com bounce
+				// Animações lentas sequenciais com bounce - intervalo de 1s
 				'slow-slide-1': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0s both',
-				'slow-slide-2': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.15s both',
-				'slow-slide-3': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s both',
-				'slow-slide-4': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.45s both',
-				'slow-slide-5': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.6s both',
-				'slow-slide-6': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.75s both'
+				'slow-slide-2': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 1s both',
+				'slow-slide-3': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 2s both',
+				'slow-slide-4': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 3s both',
+				'slow-slide-5': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 4s both',
+				'slow-slide-6': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 5s both'
 			}
 		}
 	},
