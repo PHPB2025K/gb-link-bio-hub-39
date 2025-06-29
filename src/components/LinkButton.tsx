@@ -15,63 +15,62 @@ const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, animati
     console.log('LinkButton clicked:', { href, isPDF, userAgent: navigator.userAgent });
     
     if (isPDF) {
-      console.log('Attempting to open PDF:', href);
+      console.log('PDF link clicked, attempting to open:', href);
       
       // Detecta se é mobile
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       console.log('Is mobile device:', isMobile);
       
       if (isMobile) {
-        // Para mobile, tenta várias abordagens
-        console.log('Using mobile PDF handling');
+        console.log('Mobile detected - trying direct approach');
         
-        // Primeira tentativa: abrir diretamente
-        try {
-          window.open(href, '_blank');
-          console.log('Mobile: window.open attempted');
-        } catch (error) {
-          console.error('Mobile: window.open failed', error);
+        // Para mobile, usa abordagem mais direta
+        const fullUrl = window.location.origin + href;
+        console.log('Full PDF URL:', fullUrl);
+        
+        // Tenta abrir diretamente
+        const opened = window.open(fullUrl, '_blank', 'noopener,noreferrer');
+        console.log('Window.open result:', opened);
+        
+        if (!opened) {
+          console.log('Window.open blocked, trying alternative method');
+          // Fallback: criar link temporário
+          const tempLink = document.createElement('a');
+          tempLink.href = fullUrl;
+          tempLink.target = '_blank';
+          tempLink.rel = 'noopener noreferrer';
           
-          // Fallback: criar link e clicar
-          const link = document.createElement('a');
-          link.href = href;
-          link.target = '_blank';
-          link.rel = 'noopener noreferrer';
-          link.download = 'catalogo-gb-2024.pdf'; // Força download em alguns casos
+          // Adiciona temporariamente ao DOM
+          tempLink.style.display = 'none';
+          document.body.appendChild(tempLink);
           
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          console.log('Mobile: fallback link click attempted');
+          // Clica no link
+          tempLink.click();
+          
+          // Remove do DOM
+          setTimeout(() => {
+            document.body.removeChild(tempLink);
+          }, 100);
+          
+          console.log('Alternative method attempted');
         }
       } else {
-        // Para desktop, mantém a lógica original com verificação
-        const link = document.createElement('a');
-        link.href = href;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
+        // Para desktop, mantém a verificação
+        console.log('Desktop detected - checking file availability');
         
-        link.onclick = (e) => {
-          console.log('Desktop: checking PDF availability');
-          fetch(href, { method: 'HEAD' })
-            .then(response => {
-              console.log('PDF check response:', response.status, response.ok);
-              if (!response.ok) {
-                e.preventDefault();
-                alert('Catálogo em breve! O arquivo PDF ainda não foi adicionado.');
-              }
-            })
-            .catch((error) => {
-              console.error('PDF check failed:', error);
-              e.preventDefault();
+        fetch(href, { method: 'HEAD' })
+          .then(response => {
+            console.log('File check response:', response.status, response.ok);
+            if (response.ok) {
+              window.open(href, '_blank', 'noopener,noreferrer');
+            } else {
               alert('Catálogo em breve! O arquivo PDF ainda não foi adicionado.');
-            });
-        };
-        
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        console.log('Desktop: link creation and click attempted');
+            }
+          })
+          .catch((error) => {
+            console.error('File check failed:', error);
+            alert('Catálogo em breve! O arquivo PDF ainda não foi adicionado.');
+          });
       }
     } else {
       console.log('Opening regular link:', href);
