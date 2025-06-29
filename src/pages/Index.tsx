@@ -28,7 +28,7 @@ const Index = () => {
     },
     {
       href: 'https://br.shp.ee/6xvXYu6',
-      icon: ShoppingBag,
+      icon: Package,
       text: 'Loja Oficial Shopee'
     },
     {
