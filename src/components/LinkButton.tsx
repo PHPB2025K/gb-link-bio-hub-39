@@ -17,46 +17,54 @@ const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, animati
     if (isPDF) {
       console.log('PDF link clicked, attempting to open:', href);
       
-      // Detecta se é mobile
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      // Melhor detecção de mobile - inclui mais dispositivos
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent) || 
+                       ('ontouchstart' in window) || 
+                       (navigator.maxTouchPoints > 0);
+      
       console.log('Is mobile device:', isMobile);
+      console.log('Touch support:', 'ontouchstart' in window);
+      console.log('Max touch points:', navigator.maxTouchPoints);
       
       if (isMobile) {
-        console.log('Mobile detected - trying direct approach');
+        console.log('Mobile detected - using direct PDF approach');
         
-        // Para mobile, usa abordagem mais direta
-        const fullUrl = window.location.origin + href;
-        console.log('Full PDF URL:', fullUrl);
+        // Para mobile, primeiro tenta o caminho público
+        const pdfPaths = [
+          '/catalogo-gb-2024.pdf',
+          './catalogo-gb-2024.pdf',
+          `${window.location.origin}/catalogo-gb-2024.pdf`
+        ];
         
-        // Tenta abrir diretamente
-        const opened = window.open(fullUrl, '_blank', 'noopener,noreferrer');
-        console.log('Window.open result:', opened);
+        console.log('Trying PDF paths:', pdfPaths);
+        
+        // Tenta abrir diretamente o primeiro caminho
+        const pdfUrl = pdfPaths[0];
+        console.log('Opening PDF URL:', pdfUrl);
+        
+        // Para mobile, usa window.open sem verificação prévia
+        const opened = window.open(pdfUrl, '_blank', 'noopener,noreferrer');
         
         if (!opened) {
-          console.log('Window.open blocked, trying alternative method');
-          // Fallback: criar link temporário
-          const tempLink = document.createElement('a');
-          tempLink.href = fullUrl;
-          tempLink.target = '_blank';
-          tempLink.rel = 'noopener noreferrer';
+          console.log('Window.open was blocked, trying alternative...');
+          // Alternativa: criar elemento <a> e simular clique
+          const link = document.createElement('a');
+          link.href = pdfUrl;
+          link.target = '_blank';
+          link.download = 'catalogo-gb-2024.pdf';
+          link.rel = 'noopener noreferrer';
           
-          // Adiciona temporariamente ao DOM
-          tempLink.style.display = 'none';
-          document.body.appendChild(tempLink);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
           
-          // Clica no link
-          tempLink.click();
-          
-          // Remove do DOM
-          setTimeout(() => {
-            document.body.removeChild(tempLink);
-          }, 100);
-          
-          console.log('Alternative method attempted');
+          console.log('Alternative download method used');
+        } else {
+          console.log('PDF opened successfully with window.open');
         }
+        
       } else {
-        // Para desktop, mantém a verificação
-        console.log('Desktop detected - checking file availability');
+        console.log('Desktop detected - checking file availability first');
         
         fetch(href, { method: 'HEAD' })
           .then(response => {
@@ -64,6 +72,7 @@ const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, animati
             if (response.ok) {
               window.open(href, '_blank', 'noopener,noreferrer');
             } else {
+              console.log('File not found, showing alert');
               alert('Catálogo em breve! O arquivo PDF ainda não foi adicionado.');
             }
           })
