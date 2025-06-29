@@ -12,81 +12,13 @@ interface LinkButtonProps {
 
 const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, animationClass = '', isPDF = false }) => {
   const handleClick = () => {
-    console.log('LinkButton clicked:', { href, isPDF, userAgent: navigator.userAgent });
+    console.log('LinkButton clicked:', { href, isPDF });
     
     if (isPDF) {
-      console.log('PDF link clicked, attempting to open:', href);
+      console.log('PDF link clicked, opening:', href);
       
-      // Detecção melhorada de mobile - forçando para sempre tratar como mobile se tiver qualquer indicação
-      const userAgent = navigator.userAgent.toLowerCase();
-      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      const isMobileUserAgent = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(userAgent);
-      const isSmallScreen = window.innerWidth <= 768;
-      
-      // Se qualquer uma dessas condições for verdadeira, trata como mobile
-      const isMobile = hasTouch || isMobileUserAgent || isSmallScreen;
-      
-      console.log('=== MOBILE DETECTION DEBUG ===');
-      console.log('User Agent:', userAgent);
-      console.log('Has touch:', hasTouch);
-      console.log('Mobile UA detected:', isMobileUserAgent);
-      console.log('Small screen:', isSmallScreen, 'Width:', window.innerWidth);
-      console.log('Final mobile detection:', isMobile);
-      console.log('===============================');
-      
-      // SEMPRE trata como mobile para PDF - mais simples e funciona melhor
-      console.log('Treating as MOBILE for PDF - using direct approach');
-      
-      // Caminhos possíveis para o PDF
-      const pdfPaths = [
-        '/catalogo-gb-2024.pdf',
-        './catalogo-gb-2024.pdf',
-        `${window.location.origin}/catalogo-gb-2024.pdf`,
-        `${window.location.origin}/public/catalogo-gb-2024.pdf`
-      ];
-      
-      console.log('Trying PDF paths:', pdfPaths);
-      
-      let pdfOpened = false;
-      
-      // Tenta cada caminho até conseguir abrir
-      for (let i = 0; i < pdfPaths.length && !pdfOpened; i++) {
-        const pdfUrl = pdfPaths[i];
-        console.log(`Attempt ${i + 1}: Opening PDF URL:`, pdfUrl);
-        
-        try {
-          // Tenta window.open primeiro
-          const opened = window.open(pdfUrl, '_blank', 'noopener,noreferrer');
-          
-          if (opened && !opened.closed) {
-            console.log('✅ PDF opened successfully with window.open');
-            pdfOpened = true;
-            break;
-          } else {
-            console.log('❌ Window.open failed or was blocked');
-          }
-        } catch (error) {
-          console.log('❌ Window.open threw error:', error);
-        }
-      }
-      
-      // Se nenhum caminho funcionou, tenta método alternativo
-      if (!pdfOpened) {
-        console.log('All paths failed, trying alternative download method...');
-        
-        const link = document.createElement('a');
-        link.href = '/catalogo-gb-2024.pdf';
-        link.target = '_blank';
-        link.download = 'catalogo-gb-2024.pdf';
-        link.rel = 'noopener noreferrer';
-        
-        // Adiciona ao DOM temporariamente
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        console.log('✅ Alternative download method executed');
-      }
+      // Simplificado - apenas abre o PDF diretamente
+      window.open(href, '_blank', 'noopener,noreferrer');
       
     } else {
       console.log('Opening regular link:', href);
