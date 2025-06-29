@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 
@@ -6,10 +5,11 @@ interface LinkButtonProps {
   href: string;
   icon: LucideIcon;
   text: string;
+  animationClass?: string;
   isPDF?: boolean;
 }
 
-const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, isPDF = false }) => {
+const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, animationClass = '', isPDF = false }) => {
   const handleClick = () => {
     if (isPDF) {
       // Para PDFs, tenta abrir em nova aba
@@ -45,7 +45,7 @@ const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, isPDF =
   return (
     <button
       onClick={handleClick}
-      className="w-full max-w-md mx-auto bg-white hover:bg-gray-50 border border-gray-200 rounded-xl p-3 h-16 flex items-center justify-between transition-all duration-200 hover:shadow-md hover:scale-[1.02] group"
+      className={`w-full max-w-md mx-auto bg-white hover:bg-gray-50 border border-gray-200 rounded-xl p-3 h-16 flex items-center justify-between transition-all duration-200 hover:shadow-md hover:scale-[1.02] group ${animationClass}`}
     >
       <div className="flex items-center space-x-3">
         <div className={`w-10 h-10 ${isPDF ? 'bg-red-500' : 'bg-gb-green'} rounded-lg flex items-center justify-center flex-shrink-0`}>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Globe, ShoppingCart, Package, ShoppingBag, BookOpen, Instagram, MessageCircle, FileText } from 'lucide-react';
 import LinkButton from '../components/LinkButton';
@@ -37,6 +36,15 @@ const Index = () => {
       text: 'Catálogo Completo (PDF)',
       isPDF: true
     }
+  ];
+
+  const animationClasses = [
+    'animate-slow-slide-1',
+    'animate-slow-slide-2',
+    'animate-slow-slide-3',
+    'animate-slow-slide-4',
+    'animate-slow-slide-5',
+    'animate-slow-slide-6'
   ];
 
   const socialLinks = [
@@ -80,6 +88,7 @@ const Index = () => {
               href={link.href}
               icon={link.icon}
               text={link.text}
+              animationClass={animationClasses[index]}
               isPDF={link.isPDF}
             />
           ))}

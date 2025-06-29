@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -91,21 +90,24 @@ export default {
 						height: '0'
 					}
 				},
-				// Nova animação fluida com bounce
-				'fluid-slide-bounce': {
+				// Animação de slide lento com bounce no final
+				'slow-slide-bounce': {
 					'0%': {
-						transform: 'translateX(80px)',
+						transform: 'translateX(100px)',
 						opacity: '0'
 					},
-					'70%': {
+					'75%': {
 						transform: 'translateX(-8px)',
 						opacity: '1'
 					},
 					'85%': {
 						transform: 'translateX(4px)'
 					},
-					'95%': {
+					'92%': {
 						transform: 'translateX(-2px)'
+					},
+					'96%': {
+						transform: 'translateX(1px)'
 					},
 					'100%': {
 						transform: 'translateX(0)',
@@ -117,13 +119,13 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				
-				// Nova animação fluida - intervalos menores para mais fluidez
-				'fluid-slide-1': 'fluid-slide-bounce 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0s both',
-				'fluid-slide-2': 'fluid-slide-bounce 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s both',
-				'fluid-slide-3': 'fluid-slide-bounce 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s both',
-				'fluid-slide-4': 'fluid-slide-bounce 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s both',
-				'fluid-slide-5': 'fluid-slide-bounce 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.4s both',
-				'fluid-slide-6': 'fluid-slide-bounce 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.5s both'
+				// Animações lentas sequenciais com bounce
+				'slow-slide-1': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0s both',
+				'slow-slide-2': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.15s both',
+				'slow-slide-3': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s both',
+				'slow-slide-4': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.45s both',
+				'slow-slide-5': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.6s both',
+				'slow-slide-6': 'slow-slide-bounce 2.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.75s both'
 			}
 		}
 	},
