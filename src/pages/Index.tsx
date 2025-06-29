@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Globe, ShoppingCart, Amazon, Package, ShoppingBag, BookOpen, Instagram, MessageCircle } from 'lucide-react';
+import { Globe, ShoppingCart, Package, ShoppingBag, BookOpen, Instagram, MessageCircle } from 'lucide-react';
 import LinkButton from '../components/LinkButton';
 import SocialIcon from '../components/SocialIcon';
 
@@ -18,7 +18,7 @@ const Index = () => {
     },
     {
       href: 'https://www.amazon.com.br/stores/page/43BDB010-7ECE-4194-842C-22343F77D712',
-      icon: Amazon,
+      icon: Package,
       text: 'Loja Oficial Amazon'
     },
     {
