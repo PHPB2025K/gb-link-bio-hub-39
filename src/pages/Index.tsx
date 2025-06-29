@@ -59,7 +59,7 @@ const Index = () => {
           {/* Logo */}
           <div className="mb-6">
             <img
-              src="/lovable-uploads/6b89b362-1a7b-4856-a3d8-4657d96d7c90.png"
+              src="/lovable-uploads/ee0f6b42-ae3f-4df3-ab7b-277d5f05ef1c.png"
               alt="GB Importadora Logo"
               className="w-32 h-auto mx-auto"
             />
