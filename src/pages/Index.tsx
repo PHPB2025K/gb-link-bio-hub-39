@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Globe, ShoppingCart, Package, ShoppingBag, BookOpen, Instagram, MessageCircle } from 'lucide-react';
 import LinkButton from '../components/LinkButton';
@@ -38,6 +37,15 @@ const Index = () => {
     }
   ];
 
+  const animationClasses = [
+    'animate-slide-in-bounce',
+    'animate-slide-in-bounce-delay-1',
+    'animate-slide-in-bounce-delay-2',
+    'animate-slide-in-bounce-delay-3',
+    'animate-slide-in-bounce-delay-4',
+    'animate-slide-in-bounce-delay-5'
+  ];
+
   const socialLinks = [
     {
       href: '#',
@@ -72,13 +80,14 @@ const Index = () => {
         </div>
 
         {/* Links Section */}
-        <div className="space-y-4 mb-12">
+        <div className="space-y-3 mb-12">
           {links.map((link, index) => (
             <LinkButton
               key={index}
               href={link.href}
               icon={link.icon}
               text={link.text}
+              animationClass={animationClasses[index]}
             />
           ))}
         </div>
