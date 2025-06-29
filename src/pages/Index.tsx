@@ -65,11 +65,6 @@ const Index = () => {
             />
           </div>
           
-          {/* Title */}
-          <h1 className="text-2xl font-antonio font-semibold text-gb-green mb-2">
-            GB Importadora
-          </h1>
-          
           {/* Subtitle */}
           <p className="text-gb-green font-antonio text-lg">
             Acesse nossos links!
