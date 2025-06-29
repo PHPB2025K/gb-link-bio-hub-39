@@ -17,8 +17,30 @@ const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, animati
     if (isPDF) {
       console.log('PDF link clicked, opening:', href);
       
-      // Simplificado - apenas abre o PDF diretamente
-      window.open(href, '_blank', 'noopener,noreferrer');
+      // Para PDFs, tenta primeiro o caminho direto
+      // Se não funcionar, tenta um download direto
+      try {
+        const pdfWindow = window.open(href, '_blank', 'noopener,noreferrer');
+        
+        // Se a janela não abriu (bloqueada), tenta método alternativo
+        if (!pdfWindow || pdfWindow.closed) {
+          console.log('Window blocked, trying direct download...');
+          
+          // Cria um link temporário para download
+          const link = document.createElement('a');
+          link.href = href;
+          link.download = 'catalogo-gb-2024.pdf';
+          link.target = '_blank';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      } catch (error) {
+        console.error('Error opening PDF:', error);
+        
+        // Fallback: tenta navegar diretamente
+        window.location.href = href;
+      }
       
     } else {
       console.log('Opening regular link:', href);
