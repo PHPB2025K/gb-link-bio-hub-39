@@ -11,7 +11,7 @@ const Index = () => {
       text: 'Site oficial (Institucional)'
     },
     {
-      href: 'https://w.app/6cmcme',
+      href: 'https://w.app/gbimportadora',
       icon: ShoppingCart,
       text: 'Compras atacado (Somente CNPJ)'
     },
