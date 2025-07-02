@@ -49,12 +49,12 @@ const Index = () => {
 
   const socialLinks = [
     {
-      href: '#',
+      href: 'https://www.instagram.com/gb_importadora/',
       icon: Instagram,
       label: 'Instagram'
     },
     {
-      href: '#',
+      href: 'https://w.app/gbimportadora',
       icon: MessageCircle,
       label: 'WhatsApp'
     }
