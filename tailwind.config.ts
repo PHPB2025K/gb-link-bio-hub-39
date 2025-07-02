@@ -90,27 +90,11 @@ export default {
 						height: '0'
 					}
 				},
-				// Animação de slide lento com bounce no final - duração ainda mais lenta
-				'slow-slide-bounce': {
+				// Animação de entrada fluida da direita para esquerda
+				'smooth-slide-in': {
 					'0%': {
-						transform: 'translateX(100px)',
+						transform: 'translateX(60px)',
 						opacity: '0'
-					},
-					'70%': {
-						transform: 'translateX(-12px)',
-						opacity: '1'
-					},
-					'80%': {
-						transform: 'translateX(6px)'
-					},
-					'88%': {
-						transform: 'translateX(-3px)'
-					},
-					'94%': {
-						transform: 'translateX(1.5px)'
-					},
-					'97%': {
-						transform: 'translateX(-0.5px)'
 					},
 					'100%': {
 						transform: 'translateX(0)',
@@ -122,13 +106,13 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				
-				// Animações com duração mais lenta (5s) e intervalo de 0.5s
-				'slow-slide-1': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 0s both',
-				'slow-slide-2': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.5s both',
-				'slow-slide-3': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 1s both',
-				'slow-slide-4': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 1.5s both',
-				'slow-slide-5': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 2s both',
-				'slow-slide-6': 'slow-slide-bounce 5s cubic-bezier(0.25, 0.1, 0.25, 1) 2.5s both'
+				// Animações de entrada fluida com timing escalonado (cascata suave)
+				'smooth-slide-1': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s both',
+				'smooth-slide-2': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both',
+				'smooth-slide-3': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both',
+				'smooth-slide-4': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both',
+				'smooth-slide-5': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both',
+				'smooth-slide-6': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both'
 			}
 		}
 	},

@@ -39,12 +39,12 @@ const Index = () => {
   ];
 
   const animationClasses = [
-    'animate-slow-slide-1',
-    'animate-slow-slide-2',
-    'animate-slow-slide-3',
-    'animate-slow-slide-4',
-    'animate-slow-slide-5',
-    'animate-slow-slide-6'
+    'animate-smooth-slide-1',
+    'animate-smooth-slide-2',
+    'animate-smooth-slide-3',
+    'animate-smooth-slide-4',
+    'animate-smooth-slide-5',
+    'animate-smooth-slide-6'
   ];
 
   const socialLinks = [
