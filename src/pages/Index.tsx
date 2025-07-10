@@ -70,7 +70,7 @@ const Index = () => {
             <img
               src="/lovable-uploads/ee0f6b42-ae3f-4df3-ab7b-277d5f05ef1c.png"
               alt="GB Importadora Logo"
-              className="w-36 h-auto mx-auto"
+              className="w-36 h-auto mx-auto animate-smooth-slide-1"
             />
           </div>
           
@@ -102,6 +102,7 @@ const Index = () => {
               href={social.href}
               icon={social.icon}
               label={social.label}
+              animationClass={`animate-smooth-slide-${index + 1}`}
             />
           ))}
         </div>
