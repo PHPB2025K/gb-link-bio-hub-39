@@ -17,10 +17,10 @@ const SocialIcon: React.FC<SocialIconProps> = ({ href, icon: Icon, label, animat
   return (
     <button
       onClick={handleClick}
-      className={`w-12 h-12 bg-gb-green hover:bg-gb-green/80 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 ${animationClass || ''}`}
-      aria-label={label}
+      className={`w-12 h-12 bg-gb-green hover:bg-gb-green-hover rounded-full flex items-center justify-center enhanced-button shadow-md hover:shadow-lg ${animationClass || ''}`}
+      aria-label={`Abrir ${label} em nova aba`}
     >
-      <Icon className="w-6 h-6 text-white" />
+      <Icon className="w-6 h-6 text-white" aria-hidden="true" />
     </button>
   );
 };

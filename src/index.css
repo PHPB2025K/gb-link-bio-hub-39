@@ -101,5 +101,37 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-display: swap;
   }
+  
+  /* Custom GB Colors */
+  :root {
+    --gb-gray: 234 234 234;
+    --gb-green: 180 25% 18%;
+    --gb-green-hover: 180 25% 15%;
+    --gb-green-light: 180 25% 25%;
+  }
+}
+
+@layer components {
+  /* Enhanced focus styles for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-gb-green focus:ring-offset-2 transition-shadow;
+  }
+  
+  /* Smooth transitions for all interactive elements */
+  .smooth-transition {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  /* Enhanced button states */
+  .enhanced-button {
+    @apply smooth-transition focus-ring hover:scale-[1.02] active:scale-[0.98];
+  }
+}
+
+/* Preload critical fonts */
+@font-face {
+  font-family: 'Antonio';
+  font-display: swap;
 }

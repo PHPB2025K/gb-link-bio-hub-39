@@ -64,27 +64,32 @@ const Index = () => {
     <div className="min-h-screen bg-gb-gray">
       <div className="container mx-auto px-4 py-8 max-w-lg">
         {/* Header Section */}
-        <div className="text-center mb-8">
+        <header className="text-center mb-8">
           {/* Logo */}
           <div className="mb-6">
             <img
               src="/lovable-uploads/ee0f6b42-ae3f-4df3-ab7b-277d5f05ef1c.png"
-              alt="GB Importadora Logo"
-              className="w-36 h-auto mx-auto animate-smooth-slide-1"
+              alt="GB Importadora - Logo oficial da empresa"
+              className="w-36 h-auto mx-auto animate-smooth-slide-1 drop-shadow-sm"
+              loading="eager"
+              decoding="async"
             />
           </div>
           
           {/* Subtitle */}
-          <p className="text-gb-green font-antonio text-lg">
-            Acesse nossos links!
+          <h1 className="text-gb-green font-antonio text-lg font-semibold">
+            Acesse nossos links oficiais!
+          </h1>
+          <p className="text-muted-foreground text-sm mt-2">
+            Encontre nossos canais de venda e atendimento
           </p>
-        </div>
+        </header>
 
         {/* Links Section */}
-        <div className="space-y-3 mb-12">
+        <main className="space-y-3 mb-12">
           {links.map((link, index) => (
             <LinkButton
-              key={index}
+              key={`link-${index}-${link.text}`}
               href={link.href}
               icon={link.icon}
               text={link.text}
@@ -92,20 +97,22 @@ const Index = () => {
               isPDF={link.isPDF}
             />
           ))}
-        </div>
+        </main>
 
         {/* Social Media Footer */}
-        <div className="flex justify-center space-x-6 pt-8">
-          {socialLinks.map((social, index) => (
-            <SocialIcon
-              key={index}
-              href={social.href}
-              icon={social.icon}
-              label={social.label}
-              animationClass={`animate-smooth-slide-${index + 1}`}
-            />
-          ))}
-        </div>
+        <footer className="flex justify-center space-x-6 pt-8" role="contentinfo">
+          <div className="flex items-center space-x-6">
+            {socialLinks.map((social, index) => (
+              <SocialIcon
+                key={`social-${index}-${social.label}`}
+                href={social.href}
+                icon={social.icon}
+                label={social.label}
+                animationClass={`animate-smooth-slide-${index + 1}`}
+              />
+            ))}
+          </div>
+        </footer>
       </div>
     </div>
   );

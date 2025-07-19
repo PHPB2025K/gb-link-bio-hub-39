@@ -62,8 +62,10 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				'gb-gray': '#EAEAEA',
-				'gb-green': '#0d4e4e'
+				'gb-gray': 'hsl(var(--gb-gray))',
+				'gb-green': 'hsl(var(--gb-green))',
+				'gb-green-hover': 'hsl(var(--gb-green-hover))',
+				'gb-green-light': 'hsl(var(--gb-green-light))'
 			},
 			fontFamily: {
 				'antonio': ['Antonio', 'sans-serif'],
