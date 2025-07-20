@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, AlertCircle, RefreshCw, Github, RotateCcw } from 'lucide-react';
+import { CheckCircle, XCircle, AlertCircle, RefreshCw, Github, RotateCcw, Home } from 'lucide-react';
 import { StatusIndicator } from '@/components/StatusIndicator';
 import { DetailedLog } from '@/components/DetailedLog';
 import { useDomainCheck } from '@/hooks/useDomainCheck';
@@ -76,6 +77,14 @@ const Debug = () => {
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <Link to="/">
+              <Button variant="outline" size="sm">
+                <Home className="w-4 h-4 mr-2" />
+                Voltar ao Início
+              </Button>
+            </Link>
+          </div>
           <h1 className="text-3xl font-bold mb-2">Debug Dashboard</h1>
           <p className="text-muted-foreground">Diagnóstico da integração Frontend → GitHub → Domínio</p>
         </div>
