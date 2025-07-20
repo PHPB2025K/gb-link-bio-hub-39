@@ -2,39 +2,40 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, AlertCircle, RefreshCw, Github } from 'lucide-react';
+import { CheckCircle, XCircle, AlertCircle, RefreshCw, Github, RotateCcw } from 'lucide-react';
+import { StatusIndicator } from '@/components/StatusIndicator';
+import { DetailedLog } from '@/components/DetailedLog';
+import { useDomainCheck } from '@/hooks/useDomainCheck';
+import { useGitHubCheck } from '@/hooks/useGitHubCheck';
 
 const Debug = () => {
-  const [domainStatus, setDomainStatus] = useState<'checking' | 'success' | 'error'>('checking');
-  const [githubStatus, setGithubStatus] = useState<'configured' | 'not-configured'>('configured');
+  const [autoRefresh, setAutoRefresh] = useState(false);
+  const expectedDomain = 'gbimportadora.info';
+  const currentUrl = window.location.href;
+  const actualDomain = window.location.hostname;
 
-  const checkDomainStatus = async () => {
-    setDomainStatus('checking');
-    try {
-      const response = await fetch(`https://gbimportadora.info`, { method: 'HEAD', mode: 'no-cors' });
-      setDomainStatus('success');
-    } catch (error) {
-      setDomainStatus('error');
-    }
-  };
+  const { result: domainResult, checkDomain } = useDomainCheck(expectedDomain);
+  const { result: githubResult, checkGitHub } = useGitHubCheck();
 
-  const checkGithubStatus = () => {
-    // Verificar se o projeto está conectado ao GitHub
-    // Como temos o arquivo CNAME, assumimos que está configurado
-    const hasCNAME = true; // Sabemos que existe public/CNAME
-    const isLovableDomain = window.location.hostname.includes('lovableproject.com');
-    
-    if (hasCNAME && isLovableDomain) {
-      setGithubStatus('configured');
-    } else {
-      setGithubStatus('not-configured');
-    }
+  const handleRefreshAll = async () => {
+    await Promise.all([checkDomain(), checkGitHub()]);
   };
 
   useEffect(() => {
-    checkDomainStatus();
-    checkGithubStatus();
+    // Initial check on page load
+    handleRefreshAll();
   }, []);
+
+  useEffect(() => {
+    if (autoRefresh) {
+      const interval = setInterval(handleRefreshAll, 60000); // Check every minute
+      return () => clearInterval(interval);
+    }
+  }, [autoRefresh]);
+
+  // Legacy status for compatibility
+  const domainStatus = domainResult.status;
+  const githubStatus = githubResult.status === 'success' ? 'configured' : 'not-configured';
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -46,6 +47,8 @@ const Debug = () => {
         return <XCircle className="w-5 h-5 text-red-500" />;
       case 'checking': 
         return <RefreshCw className="w-5 h-5 text-blue-500 animate-spin" />;
+      case 'warning':
+        return <AlertCircle className="w-5 h-5 text-yellow-500" />;
       default: 
         return <AlertCircle className="w-5 h-5 text-yellow-500" />;
     }
@@ -62,14 +65,12 @@ const Debug = () => {
         return <Badge variant="secondary">VERIFICANDO</Badge>;
       case 'not-configured': 
         return <Badge variant="destructive">NÃO CONFIGURADO</Badge>;
+      case 'warning':
+        return <Badge variant="outline" className="border-yellow-500 text-yellow-700">ATENÇÃO</Badge>;
       default: 
         return <Badge variant="outline">DESCONHECIDO</Badge>;
     }
   };
-
-  const currentUrl = window.location.href;
-  const expectedDomain = 'gbimportadora.info';
-  const actualDomain = window.location.hostname;
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -77,6 +78,26 @@ const Debug = () => {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Debug Dashboard</h1>
           <p className="text-muted-foreground">Diagnóstico da integração Frontend → GitHub → Domínio</p>
+        </div>
+
+        {/* Auto-refresh toggle */}
+        <div className="flex justify-between items-center">
+          <Button
+            onClick={handleRefreshAll}
+            variant="outline"
+            disabled={domainResult.status === 'checking' || githubResult.status === 'checking'}
+          >
+            <RotateCcw className="w-4 h-4 mr-2" />
+            Atualizar Tudo
+          </Button>
+          
+          <Button
+            onClick={() => setAutoRefresh(!autoRefresh)}
+            variant={autoRefresh ? "default" : "outline"}
+            size="sm"
+          >
+            Auto-refresh {autoRefresh ? 'ON' : 'OFF'}
+          </Button>
         </div>
 
         {/* Status Geral */}
@@ -88,20 +109,14 @@ const Debug = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center justify-between p-3 border rounded-lg">
-                <span>Domínio Personalizado</span>
-                <div className="flex items-center gap-2">
-                  {getStatusIcon(domainStatus)}
-                  {getStatusBadge(domainStatus)}
-                </div>
-              </div>
-              <div className="flex items-center justify-between p-3 border rounded-lg">
-                <span>Integração GitHub</span>
-                <div className="flex items-center gap-2">
-                  {getStatusIcon(githubStatus)}
-                  {getStatusBadge(githubStatus)}
-                </div>
-              </div>
+              <StatusIndicator 
+                status={domainResult.status} 
+                label="Domínio Personalizado"
+              />
+              <StatusIndicator 
+                status={githubResult.status} 
+                label="Integração GitHub"
+              />
             </div>
           </CardContent>
         </Card>
@@ -134,14 +149,14 @@ const Debug = () => {
               </div>
               <div className="flex justify-between">
                 <span className="font-medium">Status DNS:</span>
-                {domainStatus === 'error' ? (
-                  <Badge variant="destructive">Falha na resolução</Badge>
-                ) : domainStatus === 'success' ? (
-                  <Badge variant="default">Resolvendo</Badge>
-                ) : (
-                  <Badge variant="secondary">Verificando...</Badge>
-                )}
+                {getStatusBadge(domainStatus)}
               </div>
+              {domainResult.details.responseTime && (
+                <div className="flex justify-between">
+                  <span className="font-medium">Tempo de Resposta:</span>
+                  <span className="text-sm">{domainResult.details.responseTime}ms</span>
+                </div>
+              )}
             </div>
 
             <div className="border-l-4 border-yellow-500 pl-4 py-2 bg-yellow-50">
@@ -152,6 +167,13 @@ const Debug = () => {
                   : 'Domínio personalizado está ativo!'}
               </p>
             </div>
+
+            <DetailedLog
+              title="Verificação Detalhada do Domínio"
+              lastCheck={domainResult.lastCheck}
+              errors={domainResult.errors}
+              details={domainResult.details}
+            />
           </CardContent>
         </Card>
 
@@ -170,16 +192,26 @@ const Debug = () => {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="font-medium">Sincronização Lovable:</span>
-                <Badge variant="default">Ativa ✓</Badge>
+                <Badge variant={githubResult.details.connected ? "default" : "destructive"}>
+                  {githubResult.details.connected ? 'Ativa ✓' : 'Inativa ✗'}
+                </Badge>
               </div>
               <div className="flex justify-between">
                 <span className="font-medium">Arquivo CNAME no repo:</span>
-                <Badge variant="default">Presente ✓</Badge>
+                <Badge variant={githubResult.details.cnameExists ? "default" : "destructive"}>
+                  {githubResult.details.cnameExists ? 'Presente ✓' : 'Ausente ✗'}
+                </Badge>
               </div>
               <div className="flex justify-between">
                 <span className="font-medium">GitHub Pages:</span>
-                <Badge variant={domainStatus === 'error' ? 'destructive' : 'default'}>
-                  {domainStatus === 'error' ? 'Não configurado' : 'Configurado'}
+                <Badge variant={githubResult.details.pagesEnabled ? "default" : "destructive"}>
+                  {githubResult.details.pagesEnabled ? 'Configurado ✓' : 'Não configurado ✗'}
+                </Badge>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium">Domínio Personalizado:</span>
+                <Badge variant={githubResult.details.customDomain ? "default" : "destructive"}>
+                  {githubResult.details.customDomain ? 'Ativo ✓' : 'Inativo ✗'}
                 </Badge>
               </div>
             </div>
@@ -192,6 +224,14 @@ const Debug = () => {
                   : 'Integração com GitHub não detectada.'}
               </p>
             </div>
+
+            <DetailedLog
+              title="Verificação Detalhada do GitHub"
+              lastCheck={githubResult.lastCheck}
+              errors={githubResult.errors}
+              info={githubResult.info}
+              details={githubResult.details}
+            />
           </CardContent>
         </Card>
 
@@ -277,12 +317,20 @@ const Debug = () => {
         </Card>
 
         <div className="flex gap-4 justify-center">
-          <Button onClick={checkDomainStatus} variant="outline">
-            <RefreshCw className="w-4 h-4 mr-2" />
+          <Button 
+            onClick={checkDomain} 
+            variant="outline"
+            disabled={domainResult.status === 'checking'}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${domainResult.status === 'checking' ? 'animate-spin' : ''}`} />
             Verificar Domínio
           </Button>
-          <Button onClick={checkGithubStatus} variant="outline">
-            <Github className="w-4 h-4 mr-2" />
+          <Button 
+            onClick={checkGitHub} 
+            variant="outline"
+            disabled={githubResult.status === 'checking'}
+          >
+            <Github className={`w-4 h-4 mr-2 ${githubResult.status === 'checking' ? 'animate-spin' : ''}`} />
             Verificar GitHub
           </Button>
         </div>
