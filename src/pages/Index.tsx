@@ -1,5 +1,6 @@
 import React from 'react';
-import { Globe, ShoppingCart, Package, ShoppingBag, BookOpen, Instagram, MessageCircle, FileText } from 'lucide-react';
+import { Globe, ShoppingCart, Package, ShoppingBag, BookOpen, Instagram, MessageCircle, FileText, Bug } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import LinkButton from '../components/LinkButton';
 import SocialIcon from '../components/SocialIcon';
 
@@ -100,7 +101,7 @@ const Index = () => {
         </main>
 
         {/* Social Media Footer */}
-        <footer className="flex justify-center space-x-6 pt-8" role="contentinfo">
+        <footer className="flex flex-col items-center space-y-4 pt-8" role="contentinfo">
           <div className="flex items-center space-x-6">
             {socialLinks.map((social, index) => (
               <SocialIcon
@@ -112,6 +113,15 @@ const Index = () => {
               />
             ))}
           </div>
+          
+          {/* Debug Button */}
+          <Link 
+            to="/debug" 
+            className="inline-flex items-center gap-2 px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors duration-200 hover:bg-muted rounded-md"
+          >
+            <Bug size={14} />
+            Debug
+          </Link>
         </footer>
       </div>
     </div>
