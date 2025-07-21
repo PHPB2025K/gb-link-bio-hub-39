@@ -6,8 +6,8 @@ interface DomainCheckResult {
   status: 'checking' | 'success' | 'error' | 'warning';
   details: {
     dns: boolean;
-    connectivity: boolean;
-    ssl: boolean;
+    connectivity: boolean | string;
+    ssl: boolean | string;
     redirects: boolean;
     responseTime?: number;
     isCustomDomainActive: boolean;
@@ -35,7 +35,7 @@ export const useDomainCheck = (domain: string) => {
     setResult(prev => ({ ...prev, status: 'checking', errors: [] }));
     const startTime = Date.now();
     const errors: string[] = [];
-    const details = {
+    const details: DomainCheckResult['details'] = {
       dns: false,
       connectivity: false,
       ssl: false,
@@ -54,33 +54,51 @@ export const useDomainCheck = (domain: string) => {
         console.log('✅ Acessando através do domínio personalizado!');
       }
 
-      // Test connectivity to the domain
+      // Test connectivity and detect Cloudflare errors
       try {
         const response = await fetch(`https://${domain}`, { 
-          method: 'HEAD', 
-          mode: 'no-cors',
+          mode: 'cors',
           signal: AbortSignal.timeout(10000)
         });
-        details.connectivity = true;
-        details.ssl = true;
-        console.log('✅ Domínio responde via HTTPS');
+        
+        // Check if response is Cloudflare error page
+        const responseText = await response.text();
+        if (responseText.includes('Error 1001') || responseText.includes('DNS resolution error')) {
+          details.connectivity = 'Erro Cloudflare 1001 - DNS não configurado';
+          details.ssl = 'Cloudflare ativo mas DNS mal configurado';
+          errors.push('🚨 ERRO CRÍTICO CLOUDFLARE 1001: DNS resolution error - Domínio configurado no Cloudflare mas não consegue resolver para GitHub Pages');
+          console.log('❌ Erro Cloudflare 1001 detectado');
+        } else {
+          details.connectivity = true;
+          details.ssl = true;
+          console.log('✅ Domínio responde via HTTPS');
+        }
       } catch (error) {
         console.log('❌ Erro HTTPS:', error);
         details.connectivity = false;
         errors.push('Domínio não está respondendo via HTTPS');
         
-        // Try HTTP fallback
+        // Try HTTP fallback to detect Cloudflare errors
         try {
-          await fetch(`http://${domain}`, { 
-            method: 'HEAD', 
-            mode: 'no-cors',
+          const httpResponse = await fetch(`http://${domain}`, { 
+            mode: 'cors',
             signal: AbortSignal.timeout(5000)
           });
-          details.connectivity = true;
-          details.ssl = false;
-          errors.pop(); // Remove o erro anterior
-          errors.push('Domínio responde apenas via HTTP (sem SSL)');
-          console.log('⚠️ Domínio responde apenas via HTTP');
+          const httpText = await httpResponse.text();
+          
+          if (httpText.includes('Error 1001')) {
+            details.connectivity = 'Erro Cloudflare 1001 - DNS não configurado';
+            details.ssl = 'Cloudflare ativo mas DNS mal configurado';
+            errors.pop(); // Remove erro HTTPS
+            errors.push('🚨 ERRO CRÍTICO CLOUDFLARE 1001: DNS resolution error via HTTP');
+            console.log('❌ Erro Cloudflare 1001 detectado via HTTP');
+          } else {
+            details.connectivity = true;
+            details.ssl = false;
+            errors.pop(); // Remove o erro anterior
+            errors.push('Domínio responde apenas via HTTP (sem SSL)');
+            console.log('⚠️ Domínio responde apenas via HTTP');
+          }
         } catch {
           errors.push('Domínio não responde em HTTP nem HTTPS');
           console.log('❌ Domínio não responde');
@@ -131,8 +149,12 @@ export const useDomainCheck = (domain: string) => {
 
       details.responseTime = Date.now() - startTime;
 
-      const status = errors.length === 0 ? 'success' : 
-                    (details.connectivity || details.isCustomDomainActive) ? 'warning' : 'error';
+        // Determine status with Cloudflare error detection
+        const hasCloudflareError = errors.some(error => error.includes('CLOUDFLARE 1001'));
+        const connectivityCheck = typeof details.connectivity === 'string' || details.connectivity;
+        const status = hasCloudflareError ? 'error' :
+                      errors.length === 0 ? 'success' : 
+                      (connectivityCheck || details.isCustomDomainActive) ? 'warning' : 'error';
 
       setResult({
         status,

@@ -324,34 +324,61 @@ const Debug = () => {
               </div>
             </div>
 
-            {/* Status do Domínio */}
+            {/* Status do Domínio com detecção de erro Cloudflare */}
             <div className={`border-l-4 pl-4 py-3 ${
+              domainResult.errors?.some(error => error.includes('CLOUDFLARE 1001')) ? 'border-red-500 bg-red-50' :
               isOnCustomDomain ? 'border-green-500 bg-green-50' : 
               domainResult.details.dns ? 'border-yellow-500 bg-yellow-50' :
               'border-red-500 bg-red-50'
             }`}>
               <h4 className={`font-semibold mb-2 ${
+                domainResult.errors?.some(error => error.includes('CLOUDFLARE 1001')) ? 'text-red-800' :
                 isOnCustomDomain ? 'text-green-800' : 
                 domainResult.details.dns ? 'text-yellow-800' :
                 'text-red-800'
               }`}>
-                {isOnCustomDomain ? '🎉 DOMÍNIO PERSONALIZADO ATIVO' : 
+                {domainResult.errors?.some(error => error.includes('CLOUDFLARE 1001')) ? '🚨 ERRO CRÍTICO: CLOUDFLARE 1001' :
+                 isOnCustomDomain ? '🎉 DOMÍNIO PERSONALIZADO ATIVO' : 
                  domainResult.details.dns ? '⏳ DOMÍNIO CONFIGURADO - AGUARDANDO ATIVAÇÃO' :
                  '❌ DOMÍNIO NÃO CONFIGURADO'}
               </h4>
               <p className={`text-sm mb-3 ${
+                domainResult.errors?.some(error => error.includes('CLOUDFLARE 1001')) ? 'text-red-700' :
                 isOnCustomDomain ? 'text-green-700' : 
                 domainResult.details.dns ? 'text-yellow-700' :
                 'text-red-700'
               }`}>
-                {isOnCustomDomain 
-                  ? 'Perfeito! Você está acessando através do domínio personalizado com SSL ativo.'
-                  : domainResult.details.dns 
-                    ? 'DNS configurado corretamente, mas você ainda está acessando via Lovable. O domínio está pronto para uso.'
-                    : 'DNS não está resolvendo. Verifique as configurações no seu provedor de DNS.'}
+                {domainResult.errors?.some(error => error.includes('CLOUDFLARE 1001')) 
+                  ? '⚠️ DNS resolution error - Domínio configurado no Cloudflare but não consegue resolver para GitHub Pages. Siga as instruções abaixo para corrigir.'
+                  : isOnCustomDomain 
+                    ? 'Perfeito! Você está acessando através do domínio personalizado com SSL ativo.'
+                    : domainResult.details.dns 
+                      ? 'DNS configurado corretamente, mas você ainda está acessando via Lovable. O domínio está pronto para uso.'
+                      : 'DNS não está resolvendo. Verifique as configurações no seu provedor de DNS.'}
               </p>
+
+              {/* Soluções específicas para Cloudflare 1001 */}
+              {domainResult.errors?.some(error => error.includes('CLOUDFLARE 1001')) && (
+                <div className="mt-4 p-4 bg-red-100 border border-red-200 rounded-lg">
+                  <h5 className="font-semibold text-red-800 mb-2">🔧 Solução Imediata - Erro Cloudflare 1001:</h5>
+                  <div className="space-y-2 text-sm text-red-700">
+                    <p><strong>1.</strong> Acesse o painel do Cloudflare</p>
+                    <p><strong>2.</strong> Vá em DNS → Records</p>
+                    <p><strong>3.</strong> Configure os registros A apontando para GitHub Pages:</p>
+                    <div className="ml-4 p-2 bg-red-50 rounded font-mono text-xs">
+                      185.199.108.153<br/>
+                      185.199.109.153<br/>
+                      185.199.110.153<br/>
+                      185.199.111.153
+                    </div>
+                    <p><strong>4.</strong> Configure CNAME www → gbimportadora.info</p>
+                    <p><strong>5.</strong> Desative proxy (nuvem cinza) temporariamente</p>
+                    <p><strong>6.</strong> Aguarde 5-10 minutos para propagação</p>
+                  </div>
+                </div>
+              )}
               
-              {domainResult.details.dns && !isOnCustomDomain && (
+              {domainResult.details.dns && !isOnCustomDomain && !domainResult.errors?.some(error => error.includes('CLOUDFLARE 1001')) && (
                 <div className="p-3 bg-blue-100 rounded text-sm text-blue-800 border border-blue-200">
                   <strong>🚀 Acesse agora:</strong> <a href={`https://${expectedDomain}`} className="underline font-medium hover:text-blue-900" target="_blank" rel="noopener noreferrer">https://{expectedDomain}</a>
                 </div>
