@@ -34,9 +34,15 @@ const Debug = () => {
     }
   }, [autoRefresh]);
 
-  // Legacy status for compatibility
+  // Compute real-time status
+  const isOnCustomDomain = actualDomain === expectedDomain;
   const domainStatus = domainResult.status;
-  const githubStatus = githubResult.status === 'success' ? 'configured' : 'not-configured';
+  const githubStatus = githubResult.status;
+  
+  // Overall system status
+  const systemStatus = isOnCustomDomain ? 'success' : 
+                      (githubResult.details.pagesEnabled && githubResult.details.dnsVerified) ? 'warning' : 
+                      'error';
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -168,13 +174,32 @@ const Debug = () => {
               )}
             </div>
 
-            <div className="border-l-4 border-yellow-500 pl-4 py-2 bg-yellow-50">
-              <h4 className="font-semibold text-yellow-800">Status do Domínio</h4>
-              <p className="text-sm text-yellow-700">
-                {actualDomain !== expectedDomain 
-                  ? 'Você está acessando através do domínio Lovable. O domínio personalizado ainda não está ativo.'
-                  : 'Domínio personalizado está ativo!'}
+            <div className={`border-l-4 pl-4 py-2 ${
+              isOnCustomDomain ? 'border-green-500 bg-green-50' : 
+              domainResult.details.dns ? 'border-yellow-500 bg-yellow-50' :
+              'border-red-500 bg-red-50'
+            }`}>
+              <h4 className={`font-semibold ${
+                isOnCustomDomain ? 'text-green-800' : 
+                domainResult.details.dns ? 'text-yellow-800' :
+                'text-red-800'
+              }`}>Status do Domínio</h4>
+              <p className={`text-sm ${
+                isOnCustomDomain ? 'text-green-700' : 
+                domainResult.details.dns ? 'text-yellow-700' :
+                'text-red-700'
+              }`}>
+                {isOnCustomDomain 
+                  ? '🎉 SUCESSO! Domínio personalizado está ATIVO e funcionando!'
+                  : domainResult.details.dns 
+                    ? '⏳ DNS configurado mas ainda acessando via Lovable. Aguarde a propagação ou acesse gbimportadora.info diretamente.'
+                    : '❌ DNS não está resolvendo ou configurado incorretamente.'}
               </p>
+              {domainResult.details.dns && !isOnCustomDomain && (
+                <div className="mt-2 p-2 bg-blue-100 rounded text-xs text-blue-700">
+                  <strong>Dica:</strong> Tente acessar <a href={`https://${expectedDomain}`} className="underline font-medium" target="_blank" rel="noopener noreferrer">https://{expectedDomain}</a> diretamente!
+                </div>
+              )}
             </div>
 
             <DetailedLog
@@ -225,12 +250,26 @@ const Debug = () => {
               </div>
             </div>
 
-            <div className="border-l-4 border-blue-500 pl-4 py-2 bg-blue-50">
-              <h4 className="font-semibold text-blue-800">Status da Integração</h4>
-              <p className="text-sm text-blue-700">
-                {githubStatus === 'configured' 
-                  ? 'Projeto conectado ao GitHub com sincronização bidirecional ativa. Arquivo CNAME configurado para GitHub Pages.'
-                  : 'Integração com GitHub não detectada.'}
+            <div className={`border-l-4 pl-4 py-2 ${
+              githubStatus === 'success' ? 'border-green-500 bg-green-50' :
+              githubStatus === 'warning' ? 'border-yellow-500 bg-yellow-50' :
+              'border-red-500 bg-red-50'
+            }`}>
+              <h4 className={`font-semibold ${
+                githubStatus === 'success' ? 'text-green-800' :
+                githubStatus === 'warning' ? 'text-yellow-800' :
+                'text-red-800'
+              }`}>Status da Integração</h4>
+              <p className={`text-sm ${
+                githubStatus === 'success' ? 'text-green-700' :
+                githubStatus === 'warning' ? 'text-yellow-700' :
+                'text-red-700'
+              }`}>
+                {githubStatus === 'success' 
+                  ? 'GitHub Pages ATIVO! Domínio personalizado configurado e funcionando.'
+                  : githubStatus === 'warning'
+                  ? 'GitHub Pages configurado, aguardando ativação do domínio personalizado.'
+                  : 'Problemas detectados na integração GitHub ou configuração do Pages.'}
               </p>
             </div>
 
@@ -244,43 +283,77 @@ const Debug = () => {
           </CardContent>
         </Card>
 
-        {/* Problemas Identificados */}
+        {/* Status e Problemas */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-red-600">Problemas Identificados</CardTitle>
+            <CardTitle className={
+              isOnCustomDomain ? "text-green-600" : 
+              domainResult.details.dns && githubResult.details.pagesEnabled ? "text-yellow-600" : 
+              "text-red-600"
+            }>
+              {isOnCustomDomain ? "✅ Sistema Funcionando" : 
+               domainResult.details.dns && githubResult.details.pagesEnabled ? "⏳ Aguardando Ativação" : 
+               "❌ Problemas Identificados"}
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-3">
-              {actualDomain !== expectedDomain && (
-                <div className="flex items-start gap-3 p-3 border border-red-200 rounded-lg bg-red-50">
-                  <XCircle className="w-5 h-5 text-red-500 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-red-800">Domínio Personalizado Não Ativo</h4>
-                    <p className="text-sm text-red-700">O site ainda está sendo servido pelo domínio Lovable em vez do gbimportadora.info.</p>
-                  </div>
+            {isOnCustomDomain ? (
+              <div className="flex items-start gap-3 p-3 border border-green-200 rounded-lg bg-green-50">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-green-800">🎉 Perfeito! Tudo Funcionando</h4>
+                  <p className="text-sm text-green-700">
+                    O domínio personalizado gbimportadora.info está ativo e funcionando corretamente. 
+                    GitHub Pages configurado, DNS resolvido, e SSL ativo.
+                  </p>
                 </div>
-              )}
-              
-              {domainStatus === 'error' && (
-                <div className="flex items-start gap-3 p-3 border border-red-200 rounded-lg bg-red-50">
-                  <XCircle className="w-5 h-5 text-red-500 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-red-800">DNS Não Resolve</h4>
-                    <p className="text-sm text-red-700">O domínio gbimportadora.info não está respondendo. Verifique as configurações de DNS.</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {!isOnCustomDomain && domainResult.details.dns && githubResult.details.pagesEnabled && (
+                  <div className="flex items-start gap-3 p-3 border border-yellow-200 rounded-lg bg-yellow-50">
+                    <AlertCircle className="w-5 h-5 text-yellow-500 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-yellow-800">⏳ Configurado mas Inativo</h4>
+                      <p className="text-sm text-yellow-700">
+                        GitHub Pages e DNS estão configurados, mas você ainda está acessando via Lovable. 
+                        Aguarde propagação ou acesse <a href={`https://${expectedDomain}`} className="underline font-medium">https://{expectedDomain}</a> diretamente.
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+                
+                {domainStatus === 'error' && !domainResult.details.dns && (
+                  <div className="flex items-start gap-3 p-3 border border-red-200 rounded-lg bg-red-50">
+                    <XCircle className="w-5 h-5 text-red-500 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-red-800">DNS Não Resolve</h4>
+                      <p className="text-sm text-red-700">O domínio gbimportadora.info não está resolvendo. Verifique as configurações de DNS no IONOS.</p>
+                    </div>
+                  </div>
+                )}
 
-              {githubStatus === 'not-configured' && (
-                <div className="flex items-start gap-3 p-3 border border-yellow-200 rounded-lg bg-yellow-50">
-                  <AlertCircle className="w-5 h-5 text-yellow-500 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-yellow-800">GitHub Não Conectado</h4>
-                    <p className="text-sm text-yellow-700">Projeto não está sincronizado com GitHub.</p>
+                {githubStatus === 'error' && !githubResult.details.connected && (
+                  <div className="flex items-start gap-3 p-3 border border-red-200 rounded-lg bg-red-50">
+                    <XCircle className="w-5 h-5 text-red-500 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-red-800">GitHub Não Conectado</h4>
+                      <p className="text-sm text-red-700">Projeto não está sincronizado com GitHub.</p>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+                
+                {githubStatus === 'error' && !githubResult.details.pagesEnabled && (
+                  <div className="flex items-start gap-3 p-3 border border-red-200 rounded-lg bg-red-50">
+                    <XCircle className="w-5 h-5 text-red-500 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-red-800">GitHub Pages Não Configurado</h4>
+                      <p className="text-sm text-red-700">GitHub Pages precisa ser ativado no repositório.</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
 
