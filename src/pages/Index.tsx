@@ -114,14 +114,6 @@ const Index = () => {
             ))}
           </div>
           
-          {/* Debug Button */}
-          <Link 
-            to="/debug" 
-            className="inline-flex items-center gap-2 px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors duration-200 hover:bg-muted rounded-md"
-          >
-            <Bug size={14} />
-            Debug
-          </Link>
         </footer>
       </div>
     </div>
