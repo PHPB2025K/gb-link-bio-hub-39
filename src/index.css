@@ -106,7 +106,7 @@ All colors MUST be HSL.
   
   /* Custom GB Colors */
   :root {
-    --gb-gray: 234 234 234;
+    --gb-gray: 0 0% 92%;
     --gb-green: 180 25% 18%;
     --gb-green-hover: 180 25% 15%;
     --gb-green-light: 180 25% 25%;
