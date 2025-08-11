@@ -66,54 +66,57 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8 max-w-lg">
         {/* Header Section */}
         <header className="text-center mb-8">
-          {/* Logo */}
-          <div className="mb-6">
+          {/* Logo - Optimized for LCP */}
+          <div className="logo-container" data-anim="slide-in">
             <img
               src="/lovable-uploads/ee0f6b42-ae3f-4df3-ab7b-277d5f05ef1c.png"
               alt="GB Importadora - Logo oficial da empresa"
-              className="w-36 h-auto mx-auto animate-smooth-slide-1 drop-shadow-sm"
+              className="logo-img drop-shadow-sm"
+              width="144"
+              height="36"
+              fetchPriority="high"
               loading="eager"
               decoding="async"
             />
           </div>
           
           {/* Subtitle */}
-          <h1 className="text-gb-green font-antonio text-lg font-semibold">
-            Acesse nossos links oficiais!
-          </h1>
-          <p className="text-muted-foreground text-sm mt-2">
-            Encontre nossos canais de venda e atendimento
-          </p>
+          <div data-anim="slide-in">
+            <h1 className="text-gb-green font-antonio text-lg font-semibold">
+              Acesse nossos links oficiais!
+            </h1>
+            <p className="text-muted-foreground text-sm mt-2">
+              Encontre nossos canais de venda e atendimento
+            </p>
+          </div>
         </header>
 
         {/* Links Section */}
         <main className="space-y-3 mb-12">
           {links.map((link, index) => (
-            <LinkButton
-              key={`link-${index}-${link.text}`}
-              href={link.href}
-              icon={link.icon}
-              text={link.text}
-              animationClass={animationClasses[index]}
-              isPDF={link.isPDF}
-            />
+            <div key={`link-${index}-${link.text}`} data-anim="slide-in">
+              <LinkButton
+                href={link.href}
+                icon={link.icon}
+                text={link.text}
+                isPDF={link.isPDF}
+              />
+            </div>
           ))}
         </main>
 
         {/* Social Media Footer */}
         <footer className="flex flex-col items-center space-y-4 pt-8" role="contentinfo">
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-6" data-anim="slide-in">
             {socialLinks.map((social, index) => (
               <SocialIcon
                 key={`social-${index}-${social.label}`}
                 href={social.href}
                 icon={social.icon}
                 label={social.label}
-                animationClass={`animate-smooth-slide-${index + 1}`}
               />
             ))}
           </div>
-          
         </footer>
       </div>
     </div>

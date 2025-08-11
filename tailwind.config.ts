@@ -92,15 +92,26 @@ export default {
 						height: '0'
 					}
 				},
-				// Animação de entrada fluida da direita para esquerda
+				// Ultra-smooth slide animation using transform3d for hardware acceleration
 				'smooth-slide-in': {
 					'0%': {
-						transform: 'translateX(60px)',
+						transform: 'translate3d(24px, 0, 0)',
 						opacity: '0'
 					},
 					'100%': {
-						transform: 'translateX(0)',
+						transform: 'translate3d(0, 0, 0)',
 						opacity: '1'
+					}
+				},
+				// Performance-optimized fade
+				'fade-in-smooth': {
+					'0%': {
+						opacity: '0',
+						transform: 'translate3d(0, 8px, 0)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translate3d(0, 0, 0)'
 					}
 				}
 			},
@@ -108,13 +119,16 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				
-				// Animações de entrada fluida com timing escalonado (cascata suave)
-				'smooth-slide-1': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s both',
-				'smooth-slide-2': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both',
-				'smooth-slide-3': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both',
-				'smooth-slide-4': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both',
-				'smooth-slide-5': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both',
-				'smooth-slide-6': 'smooth-slide-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both'
+				// Ultra-smooth slide animations with optimized timing (≤ 400ms total)
+				'smooth-slide-1': 'smooth-slide-in 320ms cubic-bezier(0.22, 0.61, 0.36, 1) 0ms both',
+				'smooth-slide-2': 'smooth-slide-in 320ms cubic-bezier(0.22, 0.61, 0.36, 1) 80ms both',
+				'smooth-slide-3': 'smooth-slide-in 320ms cubic-bezier(0.22, 0.61, 0.36, 1) 160ms both',
+				'smooth-slide-4': 'smooth-slide-in 320ms cubic-bezier(0.22, 0.61, 0.36, 1) 240ms both',
+				'smooth-slide-5': 'smooth-slide-in 320ms cubic-bezier(0.22, 0.61, 0.36, 1) 320ms both',
+				'smooth-slide-6': 'smooth-slide-in 320ms cubic-bezier(0.22, 0.61, 0.36, 1) 400ms both',
+				
+				// Performance-optimized fade
+				'fade-smooth': 'fade-in-smooth 300ms cubic-bezier(0.22, 0.61, 0.36, 1) both'
 			}
 		}
 	},
