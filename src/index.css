@@ -119,37 +119,14 @@ All colors MUST be HSL.
     @apply focus:outline-none focus:ring-2 focus:ring-gb-green focus:ring-offset-2 transition-shadow;
   }
   
-  /* Smooth transitions for all interactive elements - optimized for performance */
+  /* Smooth transitions for all interactive elements */
   .smooth-transition {
-    @apply transition-all duration-300 ease-out;
-    contain: layout paint style;
+    @apply transition-all duration-300 ease-in-out;
   }
   
-  /* Enhanced button states - using transform for better performance */
+  /* Enhanced button states */
   .enhanced-button {
-    @apply smooth-transition focus-ring;
-    transform: translateZ(0); /* Force hardware acceleration */
-    transition: transform 200ms cubic-bezier(0.22, 0.61, 0.36, 1),
-                box-shadow 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
-  }
-  
-  .enhanced-button:hover {
-    transform: translateZ(0) scale(1.02);
-  }
-  
-  .enhanced-button:active {
-    transform: translateZ(0) scale(0.98);
-  }
-  
-  /* Link warmup - preconnect on hover */
-  .link-warmup {
-    cursor: pointer;
-  }
-  
-  .link-warmup:hover::before {
-    content: '';
-    position: absolute;
-    pointer-events: none;
+    @apply smooth-transition focus-ring hover:scale-[1.02] active:scale-[0.98];
   }
 }
 
