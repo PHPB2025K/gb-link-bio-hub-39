@@ -107,9 +107,9 @@ All colors MUST be HSL.
   /* Custom GB Colors */
   :root {
     --gb-gray: 0 0% 92%;
-    --gb-green: 180 25% 22%;
-    --gb-green-hover: 180 25% 19%;
-    --gb-green-light: 180 25% 28%;
+    --gb-green: 180 25% 26%;
+    --gb-green-hover: 180 25% 23%;
+    --gb-green-light: 180 25% 32%;
   }
 }
 
