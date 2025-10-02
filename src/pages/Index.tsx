@@ -7,7 +7,7 @@ import SocialIcon from '../components/SocialIcon';
 const Index = () => {
   const links = [
     {
-      href: 'https://budamix-partner-portal.lovable.app/',
+      href: 'https://importadoragb.com.br/',
       icon: Globe,
       text: 'Site oficial (Institucional)'
     },
