@@ -29,7 +29,7 @@ const LinkButton: React.FC<LinkButtonProps> = ({ href, icon: Icon, text, animati
   return (
     <button
       onClick={handleClick}
-      className={`w-full max-w-md mx-auto bg-white hover:bg-gray-50 border border-gray-200 rounded-xl p-3 h-16 flex items-center justify-between enhanced-button group shadow-sm hover:shadow-lg ${animationClass}`}
+      className={`w-full max-w-md mx-auto bg-white hover:bg-gray-50 border border-gray-200 rounded-xl p-3 h-16 flex items-center justify-between enhanced-button group shadow-md hover:shadow-xl ${animationClass}`}
       aria-label={`${text} - ${isPDF ? 'Abrir PDF' : 'Abrir link externo'}`}
     >
       <div className="flex items-center space-x-3 flex-1 min-w-0">
